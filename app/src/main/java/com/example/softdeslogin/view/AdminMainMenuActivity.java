@@ -64,6 +64,10 @@ public class AdminMainMenuActivity extends AppCompatActivity {
                         Intent gobackadminlogin = new Intent(AdminMainMenuActivity.this, MainMenuActivity.class);
                         startActivity(gobackadminlogin);
                     }
+                    else if (finalI == 3)
+                    {
+                        startActivity(new Intent(getApplicationContext(),ReportActivity.class));
+                    }
                     
                 }
             });
