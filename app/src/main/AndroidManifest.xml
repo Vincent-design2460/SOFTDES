@@ -13,7 +13,11 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/no_title">
-        <activity android:name=".view.SplashActivity"></activity>
+        <activity
+            android:name=".view.ReportActivity"
+            android:label="@string/title_activity_report"
+            android:theme="@style/no_title.NoActionBar"></activity>
+        <activity android:name=".view.SplashActivity" />
         <activity android:name=".view.StudentListActivity" />
         <activity
             android:name=".view.AddStudentActivity"

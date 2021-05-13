@@ -44,6 +44,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StudentListActivity extends AppCompatActivity implements RecyclerViewAdapter.OnStudentListener {
 
@@ -114,6 +115,8 @@ public class StudentListActivity extends AppCompatActivity implements RecyclerVi
         recyclerViewAdapter = new RecyclerViewAdapter(studentList,this);
         recyclerView.setAdapter(recyclerViewAdapter);
     }
+
+
     private void initScrollListener() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
