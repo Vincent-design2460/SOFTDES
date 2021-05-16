@@ -2,16 +2,10 @@ package com.example.softdeslogin.view;
 
 import android.os.Bundle;
 
-import com.example.softdeslogin.adapter.RecyclerViewAdapter;
-import com.example.softdeslogin.model.Student;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.softdeslogin.R;
@@ -20,14 +14,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
-
-import java.util.ArrayList;
 
 public class ReportActivity extends AppCompatActivity {
-    private DatabaseReference ref;
-    private TextView numberOfProspects;
+    private DatabaseReference numberOfProspectRef, numberOfOutsideNCRRef, numberInsideMakatiRef, numberCompEngrRef;
+    private TextView tNumberOfProspects, tNumberOfOutsideNCR, tNumberInsideMakati, tNumberCompEngr;
     private int counter;
 
 
@@ -37,16 +29,26 @@ public class ReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reportgen);
 
 
-        numberOfProspects = findViewById(R.id.numberProspect);
+        tNumberOfProspects = findViewById(R.id.numberProspect);
+        tNumberOfOutsideNCR = findViewById(R.id.numberOutsideNCR);
+        tNumberInsideMakati = findViewById(R.id.numberInsideMakati);
+        tNumberCompEngr = findViewById(R.id.numberCompEngrStud);
 
-        ref = FirebaseDatabase.getInstance().getReference().child("Student");
+        numberOfProspectRef = FirebaseDatabase.getInstance().getReference().child("Student");
+        numberOfOutsideNCRRef = FirebaseDatabase.getInstance().getReference().child("Student");
+        numberInsideMakatiRef = FirebaseDatabase.getInstance().getReference().child("Student");
+        numberCompEngrRef = FirebaseDatabase.getInstance().getReference().child("Student");
 
-        ref.addChildEventListener(new ChildEventListener() {
+
+        numberOfProspectRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                counter = counter + 1;
+                if (dataSnapshot.exists())
+                {counter = counter + 1;
                 String strCounter = String.valueOf(counter);
-                numberOfProspects.setText(strCounter);
+                tNumberOfProspects.setText(strCounter);}
+                else
+                {tNumberOfProspects.setText("0");}
             }
 
             @Override
@@ -69,6 +71,62 @@ public class ReportActivity extends AppCompatActivity {
 
             }
         });
+
+        Query queryNCR = numberOfOutsideNCRRef.orderByChild("address").equalTo("Outside NCR");
+
+        queryNCR.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                     {    String numberOutsideNCR = String.valueOf(dataSnapshot.getChildrenCount());
+                   tNumberOfOutsideNCR.setText(numberOutsideNCR);}
+                else
+                    {tNumberOfOutsideNCR.setText("0");}
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        Query queryMakati = numberInsideMakatiRef.orderByChild("address").equalTo("Makati");
+
+        queryMakati.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                {    String numberInsideMakati = String.valueOf(dataSnapshot.getChildrenCount());
+                    tNumberInsideMakati.setText(numberInsideMakati);}
+                else
+                {tNumberInsideMakati.setText("0");}
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        Query queryCompEngrStud = numberCompEngrRef.orderByChild("firstCourse").equalTo("BS in Computer Engineering");
+
+        queryCompEngrStud.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                {    String numberCompEngrStud = String.valueOf(dataSnapshot.getChildrenCount());
+                    tNumberCompEngr.setText(numberCompEngrStud);}
+                else
+                {tNumberCompEngr.setText("0");}
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
 
 
