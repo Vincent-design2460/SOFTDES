@@ -100,6 +100,7 @@ public class ReportActivity extends AppCompatActivity {
                 {    String numberInsideMakati = String.valueOf(dataSnapshot.getChildrenCount());
                     tNumberInsideMakati.setText(numberInsideMakati);}
                 else
+
                 {tNumberInsideMakati.setText("0");}
             }
 
